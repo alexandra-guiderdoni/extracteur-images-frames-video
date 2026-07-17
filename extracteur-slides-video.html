@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extracteur de diapositives vidéo - République Française</title>
+    <title>Extracteur de diapositives vidéo - Miweb</title>
 
     <!-- CSP : verrouille les sources autorisées -->
     <meta http-equiv="Content-Security-Policy"
-          content="default-src 'none'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' blob: data: https://cdn.jsdelivr.net; media-src 'self' blob:; font-src 'self' https://cdn.jsdelivr.net; connect-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;">
+          content="default-src 'none'; base-uri 'self'; form-action 'none'; object-src 'none'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' blob: data: https://cdn.jsdelivr.net; media-src 'self' blob:; font-src 'self' https://cdn.jsdelivr.net; connect-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;">
 
-    <!-- PWA Support -->
+    <!-- Métadonnées de base -->
+    <meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">
     <meta name="theme-color" content="#000091">
-    <meta name="description" content="Outil officiel d'extraction de diapositives vidéo - Miweb">
+    <meta name="description" content="Outil d'extraction de diapositives vidéo - Miweb">
     
     <!-- DSFR CSS (SRI) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.11.2/dist/dsfr.min.css" integrity="sha384-VuzA/gYnk/ZqcT5a/ravR88otj71vNPl/h1JPrKoESV33DCX6SeXIxBcRr5qYPRj" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.11.2/dist/utility/icons/icons.min.css" integrity="sha384-UKf0W85KB7U0w/zmH6760XIKn5dSyfePNpOLyPyk0C8sutElQ4N2hU6zjsJ0yihr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.14.4/dist/dsfr.min.css" integrity="sha384-atVZ+aK6VI0nWyTEhKgze5InDJ+SWRRqa0BCZ2MTNyoOcBiHj1c3dGPdi6ML65B3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.14.4/dist/utility/icons/icons.min.css" integrity="sha384-jbiFcDbZ0mN7PCoRhmUPNFe1kvmKJWgQyRHsto+jfa9lMO4G7v6yfv8mqbWfjnwF" crossorigin="anonymous">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.14.4/dist/favicon/apple-touch-icon.png">
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.14.4/dist/favicon/favicon.svg" type="image/svg+xml">
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.14.4/dist/favicon/favicon.ico" type="image/x-icon">
     <style>
         body {
             background: var(--background-alt-grey);
@@ -118,23 +122,37 @@
             gap: 1.5rem;
         }
 
-        .fr-card--custom {
+        .extractor-card {
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
-        .fr-card--custom:hover {
+        .extractor-card:hover {
             transform: translateY(-2px);
             box-shadow: var(--hover-box-shadow, 0 8px 24px rgba(0, 0, 145, 0.15));
         }
 
-        .fr-card--custom .fr-card__img {
+        .extractor-card .fr-card__img {
             height: 150px;
             object-fit: cover;
         }
 
-        .fr-card--custom .fr-card__body {
+        .extractor-card .fr-card__body {
             padding: 1rem;
+        }
+
+        .extraction-progress {
+            background: var(--background-contrast-grey);
+            border-radius: 0.25rem;
+            height: 0.75rem;
+            overflow: hidden;
+        }
+
+        .extraction-progress__bar {
+            background: var(--background-action-high-blue-france);
+            height: 100%;
+            transition: width 0.2s ease;
+            width: 0%;
         }
 
         .image-filename {
@@ -163,7 +181,16 @@
             pointer-events: auto;
         }
 
-        .fr-notice--toast {
+        .fr-footer {
+            background-color: var(--background-default-grey);
+        }
+
+        .fr-footer a {
+            background-color: var(--background-default-grey);
+            color: var(--text-action-high-blue-france);
+        }
+
+        .toast-notice {
             margin-bottom: 1rem;
             animation: slideIn 0.3s ease;
         }
@@ -210,7 +237,7 @@
                 gap: 1rem;
             }
 
-            .fr-card--custom .fr-card__img {
+            .extractor-card .fr-card__img {
                 height: 120px;
             }
 
@@ -221,7 +248,7 @@
                 max-width: none;
             }
 
-            .fr-notice--toast {
+            .toast-notice {
                 margin-bottom: 0.5rem;
             }
         }
@@ -238,31 +265,25 @@
     </style>
 </head>
 <body>
-    <!-- Skip Links pour l'accessibilité -->
-    <nav class="fr-skiplinks">
-        <div class="fr-container">
+    <!-- Liens d'évitement -->
+    <div class="fr-skiplinks">
+        <nav class="fr-container" role="navigation" aria-label="Accès rapide">
             <ul class="fr-skiplinks__list">
-                <li><a class="fr-link" href="#contenu">Aller au contenu principal</a></li>
-                <li><a class="fr-link" href="#controles">Aller aux contrôles</a></li>
+                <li><a class="fr-link" href="#contenu">Accéder au contenu</a></li>
+                <li><a class="fr-link" href="#controles">Accéder aux contrôles</a></li>
+                <li><a class="fr-link" href="#footer">Accéder au pied de page</a></li>
             </ul>
-        </div>
-    </nav>
+        </nav>
+    </div>
 
-    <!-- Header officiel DSFR -->
-    <header class="fr-header">
+    <!-- En-tête DSFR -->
+    <header role="banner" class="fr-header">
         <div class="fr-header__body">
             <div class="fr-container">
                 <div class="fr-header__body-row">
                     <div class="fr-header__brand fr-enlarge-link">
-                        <div class="fr-header__brand-top">
-                            <div class="fr-header__logo">
-                                <p class="fr-logo">
-                                    République<br>Française
-                                </p>
-                            </div>
-                        </div>
                         <div class="fr-header__service">
-                            <a href="./" title="Accueil – Miweb – République Française">
+                            <a href="./" title="Accueil - Miweb">
                                 <p class="fr-header__service-title">Miweb</p>
                             </a>
                             <p class="fr-header__service-tagline">Extracteur de diapositives vidéo</p>
@@ -289,15 +310,19 @@
         <!-- Section Upload -->
         <div class="fr-grid-row">
             <div class="fr-col-12">
-                <div class="upload-area" id="uploadArea" tabindex="0" role="button">
-                    <h2 class="fr-h3" id="upload-heading">Sélectionnez votre vidéo</h2>
-                    <p class="fr-text--sm">Glissez-déposez votre fichier ou cliquez pour parcourir</p>
-                    <p class="fr-text--xs" style="color: var(--text-mention-grey);">
-                        Formats pris en charge&nbsp;: MP4, AVI, MOV, WEBM, OGV &bull; Traitement 100&nbsp;% local
-                    </p>
+                <div class="fr-upload-group">
+                    <label class="fr-label" for="videoFile">
+                        Sélectionnez votre vidéo
+                        <span class="fr-hint-text" id="videoFile-hint">
+                            Formats pris en charge&nbsp;: MP4, AVI, MOV, WEBM, OGV. Traitement 100&nbsp;% local.
+                        </span>
+                    </label>
+                    <div class="upload-area" id="uploadArea" tabindex="0" role="button" aria-labelledby="upload-heading" aria-describedby="upload-desc videoFile-hint">
+                        <h2 class="fr-h3" id="upload-heading">Déposer une vidéo</h2>
+                        <p class="fr-text--sm" id="upload-desc">Glissez-déposez votre fichier ou activez cette zone pour parcourir votre ordinateur.</p>
+                    </div>
+                    <input class="fr-upload" type="file" id="videoFile" name="video" accept="video/*" aria-describedby="videoFile-hint">
                 </div>
-
-                <input type="file" id="videoFile" accept="video/*" aria-label="Sélectionnez un fichier vidéo" style="display: none;">
 
                 <div class="video-preview" id="videoPreview">
                     <video id="previewVideo" controls muted aria-label="Prévisualisation de la vidéo sélectionnée"></video>
@@ -315,13 +340,11 @@
                     <p id="successText"></p>
                 </div>
 
-                <!-- Progression DSFR -->
+                <!-- Progression de l'extraction -->
                 <div id="progressContainer" class="fr-my-4w" style="display: none;">
                     <p class="fr-text--sm fr-mb-1w" id="progressText" aria-live="polite" aria-atomic="true">Traitement en cours...</p>
-                    <div class="fr-progress">
-                        <div class="fr-progress__bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progressText">
-                            <div class="fr-progress__bar-determinate" id="progressBar" style="width: 0%;"></div>
-                        </div>
+                    <div class="extraction-progress">
+                        <div class="extraction-progress__bar" id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progressText"></div>
                     </div>
                 </div>
             </div>
@@ -423,7 +446,7 @@
             <div class="results-header">
                 <h2 class="fr-h3">Images extraites</h2>
                 <div>
-                    <span class="fr-badge fr-badge--blue-france" id="imageCount" role="status">0 images</span>
+                    <span class="fr-badge fr-badge--info" id="imageCount" role="status">0 images</span>
                     <button class="fr-btn fr-btn--secondary fr-ml-2w" id="downloadAllBtn">
                         <span class="fr-icon-download-line" aria-hidden="true"></span>
                         Télécharger tout (ZIP)
@@ -432,35 +455,44 @@
             </div>
             <div class="images-grid" id="imagesGrid"></div>
         </div>
+
+        <!-- Modal DSFR pour voir les images en grand -->
+        <dialog id="imageModal" class="fr-modal" role="dialog" aria-labelledby="imageModal-title">
+            <div class="fr-container fr-container--fluid fr-container-md">
+                <div class="fr-modal__body">
+                    <div class="fr-modal__header">
+                        <button class="fr-btn--close fr-btn" title="Fermer la fenêtre modale" aria-controls="imageModal">
+                            Fermer
+                        </button>
+                    </div>
+                    <div class="fr-modal__content">
+                        <h2 id="imageModal-title" class="fr-modal__title">Aperçu de l&rsquo;image</h2>
+                        <div style="text-align: center;">
+                            <img id="modalImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Aperçu agrandi de l'image extraite" style="max-width: 100%; max-height: 70vh; border-radius: 0.5rem;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </dialog>
     </main>
 
-    <!-- Footer DSFR -->
-    <footer class="fr-footer" id="footer">
+    <!-- Pied de page DSFR -->
+    <footer class="fr-footer" role="contentinfo" id="footer">
         <div class="fr-container">
             <div class="fr-footer__body">
-                <div class="fr-footer__brand fr-enlarge-link">
-                    <a class="fr-footer__brand-link" href="./" title="Retour à l'accueil – Miweb – République Française">
-                        <p class="fr-logo">
-                            République<br>Française
-                        </p>
-                    </a>
+                <div class="fr-footer__brand">
+                    <p>Miweb</p>
                 </div>
                 <div class="fr-footer__content">
                     <p class="fr-footer__content-desc">
-                        Extracteur de diapositives vidéo – Miweb
+                        Outil autonome d'extraction de diapositives vidéo. Les fichiers sont analysés dans le navigateur.
                     </p>
                     <ul class="fr-footer__content-list">
                         <li class="fr-footer__content-item">
-                            <a class="fr-footer__content-link" target="_blank" rel="noopener" href="https://legifrance.gouv.fr">legifrance.gouv.fr<span class="fr-sr-only"> – ouvre une nouvelle fenêtre</span></a>
+                            <a class="fr-footer__content-link" target="_blank" rel="noopener" href="https://github.com/alexandra-guiderdoni/extracteur-images-frames-video">Code source<span class="fr-sr-only"> - ouvre une nouvelle fenêtre</span></a>
                         </li>
                         <li class="fr-footer__content-item">
-                            <a class="fr-footer__content-link" target="_blank" rel="noopener" href="https://gouvernement.fr">gouvernement.fr<span class="fr-sr-only"> – ouvre une nouvelle fenêtre</span></a>
-                        </li>
-                        <li class="fr-footer__content-item">
-                            <a class="fr-footer__content-link" target="_blank" rel="noopener" href="https://service-public.fr">service-public.fr<span class="fr-sr-only"> – ouvre une nouvelle fenêtre</span></a>
-                        </li>
-                        <li class="fr-footer__content-item">
-                            <a class="fr-footer__content-link" target="_blank" rel="noopener" href="https://data.gouv.fr">data.gouv.fr<span class="fr-sr-only"> – ouvre une nouvelle fenêtre</span></a>
+                            <a class="fr-footer__content-link" target="_blank" rel="noopener" href="https://github.com/alexandra-guiderdoni/extracteur-images-frames-video/blob/main/LICENSE">Licence GPL v3<span class="fr-sr-only"> - ouvre une nouvelle fenêtre</span></a>
                         </li>
                     </ul>
                 </div>
@@ -468,12 +500,25 @@
             <div class="fr-footer__bottom">
                 <ul class="fr-footer__bottom-list">
                     <li class="fr-footer__bottom-item">
-                        <span class="fr-footer__bottom-link">Accessibilité&nbsp;: partiellement conforme</span>
+                        <a class="fr-footer__bottom-link" href="./">Plan du site</a>
+                    </li>
+                    <li class="fr-footer__bottom-item">
+                        <span class="fr-footer__bottom-link" id="accessibilite">Accessibilité&nbsp;: non conforme</span>
+                    </li>
+                    <li class="fr-footer__bottom-item">
+                        <span class="fr-footer__bottom-link" id="mentions-legales">Mentions légales&nbsp;: à compléter</span>
+                    </li>
+                    <li class="fr-footer__bottom-item">
+                        <span class="fr-footer__bottom-link" id="donnees-personnelles">Données personnelles&nbsp;: vidéo traitée localement</span>
+                    </li>
+                    <li class="fr-footer__bottom-item">
+                        <span class="fr-footer__bottom-link" id="gestion-cookies">Gestion des cookies&nbsp;: aucun cookie applicatif</span>
                     </li>
                 </ul>
                 <div class="fr-footer__bottom-copy">
-                    <p>Sauf mention contraire, tous les contenus de ce site sont sous
-                        <a href="https://github.com/etalab/licence-ouverte/blob/master/LO.md" target="_blank" rel="noopener">licence etalab-2.0<span class="fr-sr-only"> – ouvre une nouvelle fenêtre</span></a>
+                    <p>
+                        Le code source de cet outil est distribué sous
+                        <a href="https://github.com/alexandra-guiderdoni/extracteur-images-frames-video/blob/main/LICENSE" target="_blank" rel="noopener">licence GNU GPL v3<span class="fr-sr-only"> - ouvre une nouvelle fenêtre</span></a>.
                     </p>
                 </div>
             </div>
@@ -482,25 +527,6 @@
 
     <!-- Container pour notifications toast -->
     <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
-
-    <!-- Modal DSFR pour voir les images en grand -->
-    <dialog id="imageModal" class="fr-modal" aria-labelledby="imageModal-title">
-        <div class="fr-container fr-container--fluid fr-container-md">
-            <div class="fr-modal__body">
-                <div class="fr-modal__header">
-                    <button class="fr-btn--close fr-btn" aria-controls="imageModal">
-                        Fermer
-                    </button>
-                </div>
-                <div class="fr-modal__content">
-                    <h2 id="imageModal-title" class="fr-modal__title">Aperçu de l&rsquo;image</h2>
-                    <div style="text-align: center;">
-                        <img id="modalImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Aperçu agrandi de l'image extraite" style="max-width: 100%; max-height: 70vh; border-radius: 0.5rem;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </dialog>
 
     <!-- Canvas caché pour l'extraction des frames -->
     <canvas id="hiddenCanvas" aria-hidden="true"></canvas>
@@ -1044,7 +1070,7 @@
 
                 // Délégation d'événements sur la grille (au lieu de listeners par carte)
                 this.imagesGrid.onclick = (e) => {
-                    const card = e.target.closest('.fr-card--custom');
+                    const card = e.target.closest('.extractor-card');
                     if (!card || e.target.closest('button')) return;
                     const idx = parseInt(card.dataset.index, 10);
                     const frame = this.extractedFrames[idx];
@@ -1052,7 +1078,7 @@
                 };
                 this.imagesGrid.onkeydown = (e) => {
                     if (e.key !== 'Enter' && e.key !== ' ') return;
-                    const card = e.target.closest('.fr-card--custom');
+                    const card = e.target.closest('.extractor-card');
                     if (!card || e.target.closest('button')) return;
                     e.preventDefault();
                     const idx = parseInt(card.dataset.index, 10);
@@ -1062,7 +1088,7 @@
 
                 this.extractedFrames.forEach((frame, index) => {
                     const imageCard = document.createElement('div');
-                    imageCard.className = 'fr-card fr-card--custom';
+                    imageCard.className = 'fr-card extractor-card';
                     imageCard.setAttribute('tabindex', '0');
                     imageCard.setAttribute('role', 'listitem');
                     imageCard.dataset.index = index;
@@ -1177,7 +1203,7 @@
 
             updateProgress(percentage, message) {
                 this.progressBar.style.width = `${percentage}%`;
-                this.progressBar.parentElement.setAttribute('aria-valuenow', Math.round(percentage));
+                this.progressBar.setAttribute('aria-valuenow', Math.round(percentage));
                 this.progressText.textContent = message;
                 // Throttle SR : une annonce toutes les 5 s max
                 const now = Date.now();
@@ -1226,7 +1252,7 @@
                 // fr-notice ne supporte que --info et --alert dans le DSFR
                 const dsfrType = (type === 'error') ? 'alert' : 'info';
                 const toast = document.createElement('div');
-                toast.className = `fr-notice fr-notice--${dsfrType} fr-notice--toast`;
+                toast.className = `fr-notice fr-notice--${dsfrType} toast-notice`;
 
                 const container = document.createElement('div');
                 container.className = 'fr-container';
@@ -1442,11 +1468,13 @@
         const videoExtractor = new VideoFrameExtractor();
     </script>
 
-    <!-- DSFR JavaScript (nomodule pour compatibilité file://) -->
-    <script src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.11.2/dist/dsfr.nomodule.min.js" integrity="sha384-ug6aKCUGLkzDP7yCgw6w7eCpLhOWJGN6d6TgZAJOeiDrpD0xze7GsUtLdM4NZ6GC" crossorigin="anonymous"></script>
+    <!-- DSFR JavaScript -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.14.4/dist/dsfr.module.min.js" integrity="sha384-gPgRd2+olihO/srZe/Bqw6iVLiiaL7meuri1d5YVMejwPXg7VehLSBeORYq9yh2F" crossorigin="anonymous"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.14.4/dist/dsfr.nomodule.min.js" integrity="sha384-Z4DUpohlJ2Fb0B8Lg02tWZXbOSM2tn+L1hEWTt5sf3gNXplIW00IoMarWgHBUffK" crossorigin="anonymous"></script>
 
     <!-- Fallback accordéon si DSFR JS absent -->
     <script>
+        window.addEventListener('load', () => {
         if (typeof window.dsfr !== 'function') {
             document.querySelectorAll('.fr-accordion__btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -1465,6 +1493,7 @@
                 });
             });
         }
+        });
     </script>
 </body>
 </html>

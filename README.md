@@ -20,12 +20,12 @@ Extrait automatiquement les diapositives uniques d'une vidéo au format JPG. Tra
 - Accordéon pédagogique expliquant les paramètres
 - Pause/reprise du traitement
 
-### Conformité
+### Alignement DSFR et accessibilité
 
-- **DSFR** 1.11.2 (Design System de l'État)
-- **RGAA** 4.1.2 (hiérarchie titres, landmarks, labels, fieldset, skip links, ARIA)
-- **WCAG** 2.2 AA (contrastes, clavier, lecteur d'écran, live regions)
-- **Sécurité** : CSP meta, SRI sur les 4 CDN, construction DOM programmatique (pas de innerHTML), `'use strict'`
+- **DSFR** 1.14.4 (Design System de l'État)
+- **Accessibilité** : structure de titres, landmarks, labels, fieldset, liens d'évitement, ARIA et régions live pris en compte
+- **Audit RGAA complet** : non réalisé
+- **Sécurité** : CSP meta, SRI sur les ressources CDN, construction DOM programmatique (pas de innerHTML), `'use strict'`
 
 ### Utilisation
 

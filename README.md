@@ -8,7 +8,7 @@ Outils autonomes pour le traitement des contenus numériques.
 
 **Fichier** : `extracteur-slides-video.html`
 
-**Site public** : https://alexandra-guiderdoni.github.io/extracteur-images-frames-video/
+**Site public** : https://alexandra-guiderdoni.github.io/extracteur-images-frames-video/extracteur-slides-video.html
 
 Extrait automatiquement les diapositives uniques d'une vidéo au format JPG. Traitement 100 % local (Canvas API), aucune donnée envoyée.
 
@@ -50,15 +50,6 @@ Fonctionne en `file://` (ouverture directe) ou servi en HTTP.
 - **Présentation classique** (slides fixes) : intervalle 5 s, seuil 95 %, qualité 90 %
 - **Tutoriel avec transitions rapides** : intervalle 1 s, seuil 90 %, qualité 90 %
 - **Vidéo longue (> 30 min)** : intervalle 3–5 s, seuil 95 %, qualité 85 % (réduit le temps de traitement et la mémoire)
-
----
-
-## Licence
-
-Ce projet est distribué sous licence **GNU General Public License v3.0**.
-Voir le fichier [LICENSE](LICENSE) pour le texte complet.
-
----
 
 ## Auteurs
 

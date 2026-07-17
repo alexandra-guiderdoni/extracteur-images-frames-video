@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.1.0 — 2026-07-17
+
+### Extracteur de diapositives vidéo (`extracteur-slides-video.html`)
+
+#### DSFR et accessibilité
+- Mise à niveau des ressources DSFR vers `@gouvfr/dsfr` 1.14.4 avec SRI
+- Retrait du bloc marque République française et des formulations publiques non prouvées
+- Ajout des favicons DSFR et d'une enveloppe de page plus explicite
+- Remplacement des classes locales préfixées `fr-*` par des classes applicatives
+- Conservation d'une progression accessible avec `role="progressbar"` sans composant DSFR inventé
+
+#### Nettoyage du dépôt
+- Suppression de `LICENSE`
+- Suppression de `index.html`
+- Suppression de `CLAUDE.md`
+- Retrait des liens et sections pointant vers `LICENSE`
+- Mise à jour de l'URL publique vers la page HTML directe
+
 ## 1.0.0 — 2026-04-02
 
 ### Extracteur de diapositives vidéo (`extracteur-slides-video.html`)

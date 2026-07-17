@@ -8,6 +8,8 @@ Outils autonomes pour le traitement des contenus numériques.
 
 **Fichier** : `extracteur-slides-video.html`
 
+**Site public** : https://alexandra-guiderdoni.github.io/extracteur-images-frames-video/
+
 Extrait automatiquement les diapositives uniques d'une vidéo au format JPG. Traitement 100 % local (Canvas API), aucune donnée envoyée.
 
 ### Fonctionnalités

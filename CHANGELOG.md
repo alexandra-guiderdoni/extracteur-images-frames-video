@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.1.1 — 2026-07-17
+
+### Extracteur de diapositives vidéo (`extracteur-slides-video.html`)
+
+#### Renforcement DSFR des composants
+- Ajout du bloc marque République française dans l'en-tête et le pied de page
+- Remplacement des icônes en balises vides par les classes DSFR `fr-btn--icon-left`
+- Restructuration du groupe de boutons d'extraction avec `fr-btns-group`
+- Ajout du conteneur `fr-accordions-group` pour fiabiliser l'accordéon DSFR
+- Restructuration des cartes générées en JavaScript avec `fr-card__header`, `fr-card__img` et boutons d'action réels
+- Remplacement des notifications applicatives par des alertes DSFR fermables
+- Remplacement des pseudo-liens du pied de page par de vraies ancres
+- Correction explicite du contraste des liens de pied de page avec des tokens DSFR
+- Réduction des styles décoratifs custom au profit des tokens et structures DSFR
+
 ## 1.1.0 — 2026-07-17
 
 ### Extracteur de diapositives vidéo (`extracteur-slides-video.html`)

@@ -30,16 +30,17 @@
 
         .upload-area {
             border: 3px dashed var(--border-plain-grey);
-            border-radius: 0.5rem;
-            padding: 3rem 2rem;
+            border-radius: 0.25rem;
+            padding: 2rem;
             text-align: center;
             background: var(--background-default-grey);
-            transition: all 0.3s ease;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
             cursor: pointer;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
-        .upload-area:hover {
+        .upload-area:hover,
+        .upload-area:focus-visible {
             border-color: var(--border-plain-blue-france);
             background: var(--background-contrast-blue-france);
         }
@@ -47,9 +48,17 @@
         .upload-area.dragover {
             border-color: var(--border-plain-blue-france);
             background: var(--background-contrast-blue-france);
-            transform: scale(1.02);
         }
 
+        .page-intro,
+        .modal-preview {
+            text-align: center;
+        }
+
+        .modal-preview .fr-responsive-img {
+            max-height: 70vh;
+            width: auto;
+        }
 
         .video-preview {
             display: none;
@@ -60,22 +69,29 @@
         .video-preview video {
             max-width: 100%;
             max-height: 300px;
-            border-radius: 0.5rem;
-            box-shadow: var(--box-shadow);
+            border: 1px solid var(--border-default-grey);
         }
 
         .controls-section {
             background: var(--background-default-grey);
-            border-radius: 0.5rem;
+            border: 1px solid var(--border-default-grey);
             padding: 2rem;
             margin-top: 2rem;
-            box-shadow: var(--box-shadow);
         }
 
         .controls-section .fr-fieldset {
             border: none;
             padding: 0;
             margin: 0;
+        }
+
+        .controls-actions {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .controls-actions .fr-btns-group {
+            margin-bottom: 0;
         }
 
         /* Contraste amélioré pour les boutons désactivés (4.5:1 sur #e5e5e5) */
@@ -88,7 +104,7 @@
 
         .debug-info {
             background: var(--background-contrast-info);
-            border-radius: 0.5rem;
+            border-radius: 0.25rem;
             padding: 1rem;
             margin: 1.5rem 0;
             font-family: monospace;
@@ -111,7 +127,7 @@
             align-items: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border-plain-grey);
+            border-bottom: 1px solid var(--border-default-grey);
             flex-wrap: wrap;
             gap: 1rem;
         }
@@ -123,22 +139,17 @@
         }
 
         .extractor-card {
-            transition: all 0.3s ease;
-            cursor: pointer;
+            height: 100%;
         }
 
-        .extractor-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--hover-box-shadow, 0 8px 24px rgba(0, 0, 145, 0.15));
-        }
-
-        .extractor-card .fr-card__img {
-            height: 150px;
+        .extractor-card__image {
+            aspect-ratio: 4 / 3;
             object-fit: cover;
+            width: 100%;
         }
 
-        .extractor-card .fr-card__body {
-            padding: 1rem;
+        .extractor-card .fr-card__footer .fr-btns-group {
+            margin-bottom: 0;
         }
 
         .extraction-progress {
@@ -155,19 +166,7 @@
             width: 0%;
         }
 
-        .image-filename {
-            font-size: 0.85rem;
-            color: var(--text-mention-grey);
-            margin-bottom: 0.5rem;
-        }
-
-        .image-timestamp {
-            font-size: 0.75rem;
-            color: var(--text-mention-grey);
-            margin-bottom: 0.5rem;
-        }
-
-        /* Styles pour notifications toast */
+        /* Notifications applicatives temporaires */
         .toast-container {
             position: fixed;
             top: 2rem;
@@ -177,22 +176,19 @@
             pointer-events: none;
         }
         
-        .toast-container .fr-notice {
+        .toast-container .fr-alert {
             pointer-events: auto;
         }
 
-        .fr-footer {
-            background-color: var(--background-default-grey);
-        }
-
-        .fr-footer a {
-            background-color: var(--background-default-grey);
-            color: var(--text-action-high-blue-france);
-        }
-
-        .toast-notice {
+        .toast-alert {
             margin-bottom: 1rem;
             animation: slideIn 0.3s ease;
+        }
+
+        .fr-footer .fr-footer__content-link,
+        .fr-footer .fr-footer__bottom-link {
+            background-color: var(--background-default-grey);
+            color: var(--text-action-high-blue-france);
         }
 
         @keyframes slideIn {
@@ -237,10 +233,6 @@
                 gap: 1rem;
             }
 
-            .extractor-card .fr-card__img {
-                height: 120px;
-            }
-
             .toast-container {
                 top: 1rem;
                 right: 0.5rem;
@@ -248,7 +240,7 @@
                 max-width: none;
             }
 
-            .toast-notice {
+            .toast-alert {
                 margin-bottom: 0.5rem;
             }
         }
@@ -282,8 +274,15 @@
             <div class="fr-container">
                 <div class="fr-header__body-row">
                     <div class="fr-header__brand fr-enlarge-link">
+                        <div class="fr-header__brand-top">
+                            <div class="fr-header__logo">
+                                <p class="fr-logo">
+                                    République<br>Française
+                                </p>
+                            </div>
+                        </div>
                         <div class="fr-header__service">
-                            <a href="./" title="Accueil - Miweb">
+                            <a href="extracteur-slides-video.html" title="Accueil - Miweb - République Française">
                                 <p class="fr-header__service-title">Miweb</p>
                             </a>
                             <p class="fr-header__service-tagline">Extracteur de diapositives vidéo</p>
@@ -297,11 +296,11 @@
     <main class="fr-container fr-py-4w" id="contenu">
         <!-- En-tête de page -->
         <div class="fr-grid-row fr-grid-row--center">
-            <div class="fr-col-12 fr-col-lg-10">
-                <h1 class="fr-h1 fr-mb-2w" style="text-align: center;">
+            <div class="fr-col-12 fr-col-lg-10 page-intro">
+                <h1 class="fr-h1 fr-mb-2w">
                     Extracteur de diapositives vidéo
                 </h1>
-                <p class="fr-text--lead fr-mb-4w" style="text-align: center;">
+                <p class="fr-text--lead fr-mb-4w">
                     Chargez une vidéo, ajustez les paramètres et récupérez uniquement les diapositives uniques au format JPG – traitement 100&nbsp;% local
                 </p>
             </div>
@@ -330,13 +329,13 @@
 
                 <!-- Alertes -->
                 <div class="fr-alert fr-alert--info" id="fileInfoMsg" role="status" style="display: none;">
-                    <p class="fr-alert__title" id="fileInfoTitle"></p>
+                    <h2 class="fr-alert__title" id="fileInfoTitle"></h2>
                     <p id="fileInfoText"></p>
                 </div>
-                <div class="fr-alert fr-alert--error" id="errorMsg" role="alert" style="display: none;">
+                <div class="fr-alert fr-alert--error fr-alert--sm" id="errorMsg" role="alert" style="display: none;">
                     <p id="errorText"></p>
                 </div>
-                <div class="fr-alert fr-alert--success" id="successMsg" role="status" style="display: none;">
+                <div class="fr-alert fr-alert--success fr-alert--sm" id="successMsg" role="status" style="display: none;">
                     <p id="successText"></p>
                 </div>
 
@@ -382,60 +381,67 @@
                             <input class="fr-input" type="number" id="quality" value="90" min="60" max="100" aria-describedby="quality-hint">
                         </div>
                     </div>
-                    <div class="fr-col-12 fr-col-lg-3 fr-btns-group fr-btns-group--inline" style="align-items: end;">
-                        <button class="fr-btn fr-btn--primary" id="processBtn" disabled>
-                            <span class="fr-icon-image-line" aria-hidden="true"></span>
-                            <span id="processBtnText">Extraire</span>
-                        </button>
-                        <button class="fr-btn fr-btn--secondary" id="pauseBtn" disabled style="display: none;" aria-pressed="false">
-                            <span id="pauseBtnIcon" class="fr-icon-pause-circle-line" aria-hidden="true"></span>
-                            <span id="pauseBtnText">Pause</span>
-                        </button>
-                        <button class="fr-btn fr-btn--secondary fr-btn--sm" id="debugToggle" aria-pressed="false">
-                            <span class="fr-icon-bug-line" aria-hidden="true"></span>
-                            <span lang="en">Debug</span>
-                        </button>
+                    <div class="fr-col-12 fr-col-lg-3 controls-actions">
+                        <ul class="fr-btns-group fr-btns-group--inline-lg">
+                            <li>
+                                <button class="fr-btn fr-btn--icon-left fr-icon-image-line" id="processBtn" disabled aria-disabled="true">
+                                    <span id="processBtnText">Extraire</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-pause-circle-line" id="pauseBtn" disabled aria-disabled="true" style="display: none;" aria-pressed="false">
+                                    <span id="pauseBtnText">Pause</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="fr-btn fr-btn--secondary fr-btn--sm fr-btn--icon-left fr-icon-bug-line" id="debugToggle" aria-pressed="false">
+                                    <span lang="en">Debug</span>
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </fieldset>
 
             <!-- Accordéon pédagogique -->
-            <section class="fr-accordion fr-mt-3w">
-                <h2 class="fr-accordion__title">
-                    <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-params">
-                        Comprendre les paramètres d'extraction
-                    </button>
-                </h2>
-                <div class="fr-collapse" id="accordion-params">
-                    <div class="fr-grid-row fr-grid-row--gutters">
-                        <div class="fr-col-12 fr-col-md-4">
-                            <h3 class="fr-text--bold fr-mb-1w">Intervalle (secondes)</h3>
-                            <p class="fr-text--sm">
-                                Fréquence d'échantillonnage de la vidéo. Une valeur de <strong>2&nbsp;s</strong>
-                                signifie qu'une image est capturée toutes les 2 secondes.
-                                Réduisez pour ne rater aucune diapositive courte, augmentez pour accélérer le traitement.
-                            </p>
-                        </div>
-                        <div class="fr-col-12 fr-col-md-4">
-                            <h3 class="fr-text--bold fr-mb-1w">Seuil de similarité</h3>
-                            <p class="fr-text--sm">
-                                Pourcentage de ressemblance entre deux images consécutives au-dessus duquel
-                                elles sont considérées identiques. À <strong>99&nbsp;%</strong>, seules les images
-                                quasi parfaitement identiques sont filtrées. Abaissez vers 85-90&nbsp;% si trop
-                                de doublons subsistent.
-                            </p>
-                        </div>
-                        <div class="fr-col-12 fr-col-md-4">
-                            <h3 class="fr-text--bold fr-mb-1w">Qualité JPG</h3>
-                            <p class="fr-text--sm">
-                                Taux de compression des images extraites. <strong>90&nbsp;%</strong> offre un bon
-                                compromis entre qualité visuelle et poids de fichier. Montez à 100&nbsp;% pour
-                                un rendu impeccable, descendez vers 70&nbsp;% pour des fichiers plus légers.
-                            </p>
+            <div class="fr-accordions-group fr-mt-3w">
+                <section class="fr-accordion">
+                    <h2 class="fr-accordion__title">
+                        <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-params">
+                            Comprendre les paramètres d'extraction
+                        </button>
+                    </h2>
+                    <div class="fr-collapse" id="accordion-params">
+                        <div class="fr-grid-row fr-grid-row--gutters">
+                            <div class="fr-col-12 fr-col-md-4">
+                                <h3 class="fr-text--bold fr-mb-1w">Intervalle (secondes)</h3>
+                                <p class="fr-text--sm">
+                                    Fréquence d'échantillonnage de la vidéo. Une valeur de <strong>2&nbsp;s</strong>
+                                    signifie qu'une image est capturée toutes les 2 secondes.
+                                    Réduisez pour ne rater aucune diapositive courte, augmentez pour accélérer le traitement.
+                                </p>
+                            </div>
+                            <div class="fr-col-12 fr-col-md-4">
+                                <h3 class="fr-text--bold fr-mb-1w">Seuil de similarité</h3>
+                                <p class="fr-text--sm">
+                                    Pourcentage de ressemblance entre deux images consécutives au-dessus duquel
+                                    elles sont considérées identiques. À <strong>99&nbsp;%</strong>, seules les images
+                                    quasi parfaitement identiques sont filtrées. Abaissez vers 85-90&nbsp;% si trop
+                                    de doublons subsistent.
+                                </p>
+                            </div>
+                            <div class="fr-col-12 fr-col-md-4">
+                                <h3 class="fr-text--bold fr-mb-1w">Qualité JPG</h3>
+                                <p class="fr-text--sm">
+                                    Taux de compression des images extraites. <strong>90&nbsp;%</strong> offre un bon
+                                    compromis entre qualité visuelle et poids de fichier. Montez à 100&nbsp;% pour
+                                    un rendu impeccable, descendez vers 70&nbsp;% pour des fichiers plus légers.
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
 
             <!-- Debug Info -->
             <div class="debug-info" id="debugInfo" role="log" aria-hidden="true" aria-label="Journal de débogage"></div>
@@ -447,8 +453,7 @@
                 <h2 class="fr-h3">Images extraites</h2>
                 <div>
                     <span class="fr-badge fr-badge--info" id="imageCount" role="status">0 images</span>
-                    <button class="fr-btn fr-btn--secondary fr-ml-2w" id="downloadAllBtn">
-                        <span class="fr-icon-download-line" aria-hidden="true"></span>
+                    <button class="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-download-line fr-ml-2w" id="downloadAllBtn">
                         Télécharger tout (ZIP)
                     </button>
                 </div>
@@ -461,14 +466,14 @@
             <div class="fr-container fr-container--fluid fr-container-md">
                 <div class="fr-modal__body">
                     <div class="fr-modal__header">
-                        <button class="fr-btn--close fr-btn" title="Fermer la fenêtre modale" aria-controls="imageModal">
+                        <button class="fr-btn--close fr-btn" title="Fermer la fenêtre modale" aria-label="Fermer la fenêtre modale" aria-controls="imageModal">
                             Fermer
                         </button>
                     </div>
                     <div class="fr-modal__content">
                         <h2 id="imageModal-title" class="fr-modal__title">Aperçu de l&rsquo;image</h2>
-                        <div style="text-align: center;">
-                            <img id="modalImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Aperçu agrandi de l'image extraite" style="max-width: 100%; max-height: 70vh; border-radius: 0.5rem;">
+                        <div class="modal-preview">
+                            <img id="modalImage" class="fr-responsive-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Aperçu agrandi de l'image extraite">
                         </div>
                     </div>
                 </div>
@@ -480,8 +485,13 @@
     <footer class="fr-footer" role="contentinfo" id="footer">
         <div class="fr-container">
             <div class="fr-footer__body">
-                <div class="fr-footer__brand">
-                    <p>Miweb</p>
+                <div class="fr-footer__brand fr-enlarge-link">
+                    <p class="fr-logo">
+                        République<br>Française
+                    </p>
+                    <a class="fr-footer__brand-link" href="extracteur-slides-video.html" title="Retour à l'accueil - Miweb - République Française">
+                        <p>Miweb</p>
+                    </a>
                 </div>
                 <div class="fr-footer__content">
                     <p class="fr-footer__content-desc">
@@ -497,23 +507,27 @@
             <div class="fr-footer__bottom">
                 <ul class="fr-footer__bottom-list">
                     <li class="fr-footer__bottom-item">
-                        <a class="fr-footer__bottom-link" href="./">Plan du site</a>
+                        <a class="fr-footer__bottom-link" href="extracteur-slides-video.html">Plan du site</a>
                     </li>
                     <li class="fr-footer__bottom-item">
-                        <span class="fr-footer__bottom-link" id="accessibilite">Accessibilité&nbsp;: non conforme</span>
+                        <a class="fr-footer__bottom-link" href="#accessibilite">Accessibilité&nbsp;: non conforme</a>
                     </li>
                     <li class="fr-footer__bottom-item">
-                        <span class="fr-footer__bottom-link" id="mentions-legales">Mentions légales&nbsp;: à compléter</span>
+                        <a class="fr-footer__bottom-link" href="#mentions-legales">Mentions légales</a>
                     </li>
                     <li class="fr-footer__bottom-item">
-                        <span class="fr-footer__bottom-link" id="donnees-personnelles">Données personnelles&nbsp;: vidéo traitée localement</span>
+                        <a class="fr-footer__bottom-link" href="#donnees-personnelles">Données personnelles</a>
                     </li>
                     <li class="fr-footer__bottom-item">
-                        <span class="fr-footer__bottom-link" id="gestion-cookies">Gestion des cookies&nbsp;: aucun cookie applicatif</span>
+                        <a class="fr-footer__bottom-link" href="#gestion-cookies">Gestion des cookies</a>
                     </li>
                 </ul>
                 <div class="fr-footer__bottom-copy">
                     <p>Outil publié comme page statique GitHub Pages.</p>
+                    <p id="accessibilite">Accessibilité&nbsp;: non conforme, audit RGAA complet non réalisé.</p>
+                    <p id="mentions-legales">Mentions légales&nbsp;: informations éditoriales à compléter par le responsable de publication.</p>
+                    <p id="donnees-personnelles">Données personnelles&nbsp;: les vidéos sont traitées localement dans le navigateur et ne sont pas envoyées vers un serveur applicatif.</p>
+                    <p id="gestion-cookies">Gestion des cookies&nbsp;: aucun cookie applicatif n'est déposé par cet outil.</p>
                 </div>
             </div>
         </div>
@@ -527,7 +541,7 @@
 
     <!-- Noscript -->
     <noscript>
-        <div class="fr-alert fr-alert--warning fr-my-4w">
+        <div class="fr-alert fr-alert--warning fr-alert--sm fr-my-4w">
             <p>JavaScript est nécessaire pour utiliser cet outil.</p>
         </div>
     </noscript>
@@ -602,7 +616,6 @@
                 this.focusableElements = [];
                 this.pauseBtn = document.getElementById('pauseBtn');
                 this.processBtnText = document.getElementById('processBtnText');
-                this.pauseBtnIcon = document.getElementById('pauseBtnIcon');
                 this.pauseBtnText = document.getElementById('pauseBtnText');
             }
 
@@ -660,6 +673,11 @@
                 });
             }
 
+            setButtonDisabled(button, disabled) {
+                button.disabled = disabled;
+                button.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+            }
+
             async handleFileSelect() {
                 const file = this.videoFile.files[0];
                 if (!file) return;
@@ -672,7 +690,7 @@
                     return;
                 }
 
-                this.processBtn.disabled = false;
+                this.setButtonDisabled(this.processBtn, false);
                 this.uploadZone.querySelector('h2').textContent = `Fichier sélectionné\u00a0: ${file.name}`;
                 this.uploadZone.querySelector('.fr-text--sm').textContent = `Taille\u00a0: ${(file.size / 1024 / 1024).toFixed(2)} Mo`;
 
@@ -726,8 +744,8 @@
                 this.isProcessing = true;
                 this.isPaused = false;
                 this.hideMessages();
-                this.processBtn.disabled = true;
-                this.pauseBtn.disabled = false;
+                this.setButtonDisabled(this.processBtn, true);
+                this.setButtonDisabled(this.pauseBtn, false);
                 this.pauseBtn.style.display = 'inline-flex';
                 this.processBtnText.textContent = 'Traitement...';
                 this.progressContainer.style.display = 'block';
@@ -747,8 +765,8 @@
                 } finally {
                     this.isProcessing = false;
                     this.isPaused = false;
-                    this.processBtn.disabled = false;
-                    this.pauseBtn.disabled = true;
+                    this.setButtonDisabled(this.processBtn, false);
+                    this.setButtonDisabled(this.pauseBtn, true);
                     this.pauseBtn.style.display = 'none';
                     this.processBtnText.textContent = 'Extraire';
                     this.progressContainer.style.display = 'none';
@@ -1062,44 +1080,16 @@
                 this.imagesGrid.setAttribute('role', 'list');
                 this.imagesGrid.setAttribute('aria-label', 'Galerie des images extraites');
 
-                // Délégation d'événements sur la grille (au lieu de listeners par carte)
-                this.imagesGrid.onclick = (e) => {
-                    const card = e.target.closest('.extractor-card');
-                    if (!card || e.target.closest('button')) return;
-                    const idx = parseInt(card.dataset.index, 10);
-                    const frame = this.extractedFrames[idx];
-                    if (frame) this.showModal(frame.dataURL, frame.filename);
-                };
-                this.imagesGrid.onkeydown = (e) => {
-                    if (e.key !== 'Enter' && e.key !== ' ') return;
-                    const card = e.target.closest('.extractor-card');
-                    if (!card || e.target.closest('button')) return;
-                    e.preventDefault();
-                    const idx = parseInt(card.dataset.index, 10);
-                    const frame = this.extractedFrames[idx];
-                    if (frame) this.showModal(frame.dataURL, frame.filename);
-                };
-
                 this.extractedFrames.forEach((frame, index) => {
                     const imageCard = document.createElement('div');
                     imageCard.className = 'fr-card extractor-card';
-                    imageCard.setAttribute('tabindex', '0');
                     imageCard.setAttribute('role', 'listitem');
-                    imageCard.dataset.index = index;
-                    imageCard.setAttribute('aria-label',
-                        `Image ${frame.filename} \u2013 ${this.formatTime(frame.timestamp)}, activez pour agrandir`);
 
                     // Construction DOM programmatique (pas de innerHTML)
                     const body = document.createElement('div');
                     body.className = 'fr-card__body';
                     const content = document.createElement('div');
                     content.className = 'fr-card__content';
-
-                    const img = document.createElement('img');
-                    img.className = 'fr-card__img';
-                    img.src = frame.dataURL;
-                    img.alt = `Image extraite ${index + 1} à ${this.formatTime(frame.timestamp)}`;
-                    img.loading = 'lazy';
 
                     const title = document.createElement('h3');
                     title.className = 'fr-card__title';
@@ -1111,20 +1101,45 @@
 
                     const footer = document.createElement('div');
                     footer.className = 'fr-card__footer';
-                    const dlBtn = document.createElement('button');
-                    dlBtn.className = 'fr-btn fr-btn--sm fr-btn--secondary';
-                    dlBtn.setAttribute('aria-label', `Télécharger ${frame.filename}`);
-                    const dlIcon = document.createElement('span');
-                    dlIcon.className = 'fr-icon-download-line';
-                    dlIcon.setAttribute('aria-hidden', 'true');
-                    dlBtn.appendChild(dlIcon);
-                    dlBtn.appendChild(document.createTextNode(' Télécharger'));
-                    dlBtn.addEventListener('click', () => this.downloadImage(frame.dataURL, frame.filename));
-                    footer.appendChild(dlBtn);
+                    const btnGroup = document.createElement('ul');
+                    btnGroup.className = 'fr-btns-group fr-btns-group--inline-lg fr-btns-group--sm';
 
-                    content.append(img, title, desc, footer);
+                    const zoomItem = document.createElement('li');
+                    const zoomBtn = document.createElement('button');
+                    zoomBtn.className = 'fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-eye-line';
+                    zoomBtn.setAttribute('type', 'button');
+                    zoomBtn.setAttribute('aria-label', `Agrandir ${frame.filename}`);
+                    zoomBtn.textContent = 'Agrandir';
+                    zoomBtn.addEventListener('click', () => this.showModal(frame.dataURL, frame.filename));
+                    zoomItem.appendChild(zoomBtn);
+
+                    const downloadItem = document.createElement('li');
+                    const dlBtn = document.createElement('button');
+                    dlBtn.className = 'fr-btn fr-btn--sm fr-btn--secondary fr-btn--icon-left fr-icon-download-line';
+                    dlBtn.setAttribute('type', 'button');
+                    dlBtn.setAttribute('aria-label', `Télécharger ${frame.filename}`);
+                    dlBtn.textContent = 'Télécharger';
+                    dlBtn.addEventListener('click', () => this.downloadImage(frame.dataURL, frame.filename));
+                    downloadItem.appendChild(dlBtn);
+
+                    btnGroup.append(zoomItem, downloadItem);
+                    footer.appendChild(btnGroup);
+
+                    const header = document.createElement('div');
+                    header.className = 'fr-card__header';
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.className = 'fr-card__img';
+                    const img = document.createElement('img');
+                    img.className = 'fr-responsive-img extractor-card__image';
+                    img.src = frame.dataURL;
+                    img.alt = `Image extraite ${index + 1} à ${this.formatTime(frame.timestamp)}`;
+                    img.loading = 'lazy';
+                    imgWrapper.appendChild(img);
+                    header.appendChild(imgWrapper);
+
+                    content.append(title, desc, footer);
                     body.appendChild(content);
-                    imageCard.appendChild(body);
+                    imageCard.append(body, header);
                     this.imagesGrid.appendChild(imageCard);
                 });
 
@@ -1243,28 +1258,23 @@
 
             // Gestion des notifications toast (construction DOM, pas innerHTML)
             showToast(message, type = 'info') {
-                // fr-notice ne supporte que --info et --alert dans le DSFR
-                const dsfrType = (type === 'error') ? 'alert' : 'info';
+                const allowedTypes = ['info', 'success', 'warning', 'error'];
+                const alertType = allowedTypes.includes(type) ? type : 'info';
                 const toast = document.createElement('div');
-                toast.className = `fr-notice fr-notice--${dsfrType} toast-notice`;
+                toast.className = `fr-alert fr-alert--${alertType} fr-alert--sm toast-alert`;
+                toast.setAttribute('role', alertType === 'error' || alertType === 'warning' ? 'alert' : 'status');
 
-                const container = document.createElement('div');
-                container.className = 'fr-container';
-                const body = document.createElement('div');
-                body.className = 'fr-notice__body';
-                const title = document.createElement('p');
-                title.className = 'fr-notice__title';
-                title.textContent = message;
+                const text = document.createElement('p');
+                text.textContent = message;
                 const closeBtn = document.createElement('button');
                 closeBtn.className = 'fr-btn--close fr-btn';
+                closeBtn.type = 'button';
                 closeBtn.title = 'Masquer le message';
-                closeBtn.textContent = 'Masquer';
+                closeBtn.setAttribute('aria-label', 'Masquer le message');
+                closeBtn.textContent = 'Masquer le message';
                 closeBtn.addEventListener('click', () => toast.remove());
 
-                body.appendChild(title);
-                body.appendChild(closeBtn);
-                container.appendChild(body);
-                toast.appendChild(container);
+                toast.append(text, closeBtn);
                 this.toastContainer.appendChild(toast);
 
                 setTimeout(() => { if (toast.parentNode) toast.remove(); }, CONFIG.TOAST_DURATION);
@@ -1298,7 +1308,10 @@
 
             navigateGallery(direction) {
                 if (this.focusableElements.length === 0) return;
-                
+                const activeIndex = this.focusableElements.indexOf(document.activeElement);
+                if (activeIndex >= 0) {
+                    this.currentFocusIndex = activeIndex;
+                }
                 this.currentFocusIndex += direction;
                 
                 if (this.currentFocusIndex >= this.focusableElements.length) {
@@ -1311,7 +1324,7 @@
             }
 
             updateFocusableElements() {
-                this.focusableElements = Array.from(this.imagesGrid.querySelectorAll('.fr-card'));
+                this.focusableElements = Array.from(this.imagesGrid.querySelectorAll('.extractor-card button'));
                 this.currentFocusIndex = -1;
             }
 
@@ -1418,7 +1431,7 @@
             // Reset interface amélioré
             resetInterface() {
                 this.extractedFrames = [];
-                this.processBtn.disabled = true;
+                this.setButtonDisabled(this.processBtn, true);
                 this.videoFile.value = '';
                 this.videoPreview.style.display = 'none';
                 this.results.style.display = 'none';
@@ -1444,12 +1457,14 @@
                 this.pauseBtn.setAttribute('aria-pressed', this.isPaused);
 
                 if (this.isPaused) {
-                    this.pauseBtnIcon.className = 'fr-icon-play-circle-line';
+                    this.pauseBtn.classList.remove('fr-icon-pause-circle-line');
+                    this.pauseBtn.classList.add('fr-icon-play-circle-line');
                     this.pauseBtnText.textContent = 'Reprendre';
                     this.showToast('Traitement mis en pause', 'info');
                     this.announceToScreenReader('Traitement mis en pause');
                 } else {
-                    this.pauseBtnIcon.className = 'fr-icon-pause-circle-line';
+                    this.pauseBtn.classList.remove('fr-icon-play-circle-line');
+                    this.pauseBtn.classList.add('fr-icon-pause-circle-line');
                     this.pauseBtnText.textContent = 'Pause';
                     this.showToast('Traitement repris', 'info');
                     this.announceToScreenReader('Traitement repris');
